@@ -3,9 +3,12 @@ package com.notahmed.springsecurityjwt.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +25,8 @@ public class JwtUtil {
     // extractUserName, claims, etc
 
     private final String SECRET_KEY = "secret";
+
+    private final SecretKey KEY = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(SECRET_KEY));
 
 
     /**
@@ -70,10 +75,11 @@ public class JwtUtil {
 
         return Jwts
                 .parser()
-
-                .decryptWith(SECRET_KEY)
+                .verifyWith(KEY)
                 .build()
-                .parseEncryptedClaims(token);
+                .parseEncryptedClaims(token)
+                .getPayload();
+
     }
 
 
@@ -115,7 +121,13 @@ public class JwtUtil {
     }
 
 
-    public boolean validateToken(String token, UserDetails userDetails) {
+    /**
+     * method to check if the token is valid or not
+     * @param token
+     * @param userDetails
+     * @return
+     */
+    public boolean isValidToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 
