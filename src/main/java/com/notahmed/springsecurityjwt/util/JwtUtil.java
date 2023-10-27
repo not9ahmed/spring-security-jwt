@@ -34,7 +34,7 @@ public class JwtUtil {
      * @param token of type String
      * @return username from the token
      */
-    private String extractUsername(String token) {
+    public String extractUsername(String token) {
 
         return extractClaim(token, Claims::getSubject);
     }
@@ -45,9 +45,9 @@ public class JwtUtil {
      * @param token of type string
      * @return data of the expiration from a token
      */
-    private Date extractExpirationDate(String token) {
+    public Date extractExpirationDate(String token) {
 
-        return null;
+        return extractClaim(token, Claims::getExpiration);
     }
 
 
@@ -60,7 +60,7 @@ public class JwtUtil {
      * @return a single claim
      * @param <T>
      */
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -88,7 +88,7 @@ public class JwtUtil {
      * @param token
      * @return true if the token is valid, otherwise it is expired
      */
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
 
         return extractExpirationDate(token).before(new Date());
 
@@ -100,7 +100,7 @@ public class JwtUtil {
      * @param userDetails
      * @return a valid JWT token
      */
-    private String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
 
         Map<String, Object> claims = new HashMap<>();
 
@@ -109,7 +109,7 @@ public class JwtUtil {
     }
 
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    public String createToken(Map<String, Object> claims, String subject) {
 
           return Jwts.builder()
                   .claims(claims)

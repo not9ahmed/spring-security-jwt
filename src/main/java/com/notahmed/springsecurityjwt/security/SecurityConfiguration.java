@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
@@ -34,5 +37,25 @@ public class SecurityConfiguration {
         authProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
 
         return authProvider;
+    }
+
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+
+        // telling spring security to allow anyone to access the /authenticate endpoint
+        // and for other request the user should be logged in
+        http
+                .csrf(
+                        csrfConfigurer -> csrfConfigurer.disable()
+                )
+                .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/authenticate").permitAll()
+                .anyRequest().authenticated()
+        ).formLogin(Customizer.withDefaults());
+
+
+        return http.build();
     }
 }
