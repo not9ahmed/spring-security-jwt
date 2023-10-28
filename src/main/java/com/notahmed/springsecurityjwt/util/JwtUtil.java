@@ -73,11 +73,15 @@ public class JwtUtil {
      */
     private Claims extractAllClaims(String token) {
 
+        // this has issues now
+// TODO because of this so read it
+//        parseSignedClaims
+
         return Jwts
                 .parser()
                 .verifyWith(KEY)
                 .build()
-                .parseEncryptedClaims(token)
+                .parseSignedClaims(token)
                 .getPayload();
 
     }

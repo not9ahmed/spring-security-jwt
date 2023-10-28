@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/authenticate")
 public class AuthenticationController {
 
 
@@ -46,7 +46,7 @@ public class AuthenticationController {
 //    }
 
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> createAuthToken(@RequestBody AuthenticationRequest authenticationRequest)
             throws Exception {
 
@@ -89,6 +89,15 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationResponse);
 
     }
+
+
+    /*
+    try post with the following json
+     * {
+        "username": "notahmed",
+        "password": "password"
+    }
+     */
 
 
 }
