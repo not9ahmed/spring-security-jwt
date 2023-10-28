@@ -24,7 +24,7 @@ public class JwtUtil {
     // validate token
     // extractUserName, claims, etc
 
-    private final String SECRET_KEY = "secret";
+    private final String SECRET_KEY = "D65CCBEBD47F1F725D1EA2A79EF901911A9B40ED3B08AFF024FC4704ECFC18C1";
 
     private final SecretKey KEY = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(SECRET_KEY));
 

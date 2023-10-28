@@ -82,9 +82,11 @@ public class AuthenticationController {
 //        // generate a token from the user details object
 //        final String token = jwtUtil.generateToken(userDetails);
 
+        final AuthenticationResponse authenticationResponse   = authenticationService.authenticateUser(authenticationRequest);
+
 
         // returns a response entity object
-        return ResponseEntity.ok(authenticationService.authenticateUser(authenticationRequest));
+        return ResponseEntity.ok(authenticationResponse);
 
     }
 
